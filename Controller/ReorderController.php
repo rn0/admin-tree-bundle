@@ -38,8 +38,7 @@ class ReorderController
         $this->em->flush();
 
         return new RedirectResponse(
-            $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId())),
-            302
+            $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId()))
         );
     }
 
@@ -55,8 +54,7 @@ class ReorderController
         $this->em->flush();
 
         return new RedirectResponse(
-            $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId())),
-            302
+            $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId()))
         );
     }
 
