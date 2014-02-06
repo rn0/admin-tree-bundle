@@ -2,10 +2,8 @@
 
 namespace FSi\Bundle\AdminTreeBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
 
@@ -21,9 +19,9 @@ class ReorderController
         $this->router = $router;
     }
 
-    public function moveUpAction(Request $request, CRUDElement $element)
+    public function moveUpAction(CRUDElement $element, $id)
     {
-        $entity = $this->getEntity($element, $request->get('id'));
+        $entity = $this->getEntity($element, $id);
 
         /** @var $repository \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
         $repository = $element->getRepository();
@@ -38,9 +36,9 @@ class ReorderController
         );
     }
 
-    public function moveDownAction(Request $request, CRUDElement $element)
+    public function moveDownAction(CRUDElement $element, $id)
     {
-        $entity = $this->getEntity($element, $request->get('id'));
+        $entity = $this->getEntity($element, $id);
 
         /** @var $repository \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
         $repository = $element->getRepository();
