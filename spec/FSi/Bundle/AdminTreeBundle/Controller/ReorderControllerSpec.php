@@ -58,6 +58,7 @@ class ReorderControllerSpec extends ObjectBehavior
 
         $response = $this->moveUpAction($request, $element);
         $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
     function it_moves_down_item_when_move_down_action_called(
@@ -85,6 +86,7 @@ class ReorderControllerSpec extends ObjectBehavior
 
         $response = $this->moveDownAction($request, $element);
         $response->shouldHaveType('Symfony\Component\HttpFoundation\RedirectResponse');
+        $response->getTargetUrl()->shouldReturn('sample-path');
     }
 
     function it_throws_runtime_exception_when_specified_entity_doesnt_exist(
