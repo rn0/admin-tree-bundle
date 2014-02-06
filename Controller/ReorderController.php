@@ -17,15 +17,23 @@ use Symfony\Component\Routing\Router;
 class ReorderController
 {
     /**
-     * @var \Symfony\Component\Routing\Router
+     * @var Router
      */
     private $router;
 
+    /**
+     * @param Router $router
+     */
     public function __construct(Router $router)
     {
         $this->router = $router;
     }
 
+    /**
+     * @param CRUDElement $element
+     * @param $id
+     * @return RedirectResponse
+     */
     public function moveUpAction(CRUDElement $element, $id)
     {
         $entity = $this->getEntity($element, $id);
@@ -43,6 +51,11 @@ class ReorderController
         );
     }
 
+    /**
+     * @param CRUDElement $element
+     * @param $id
+     * @return RedirectResponse
+     */
     public function moveDownAction(CRUDElement $element, $id)
     {
         $entity = $this->getEntity($element, $id);
@@ -61,9 +74,9 @@ class ReorderController
     }
 
     /**
-     * @param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
+     * @param CRUDElement $element
      * @param int $id
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      * @return Object
      */
     private function getEntity(CRUDElement $element, $id)
