@@ -2,7 +2,7 @@
 
 namespace spec\FSi\Bundle\AdminTreeBundle\Controller;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
@@ -18,14 +18,17 @@ class ReorderControllerSpec extends ObjectBehavior
 {
     function let(
         Router $router,
-        EntityManager $em,
         CRUDElement $element,
-        DoctrineDataIndexer $indexer
+        DoctrineDataIndexer $indexer,
+        ObjectManager $om,
+        NestedTreeRepository $repository
     ) {
         $element->getId()->willReturn('category');
         $element->getDataIndexer()->willReturn($indexer);
+        $element->getObjectManager()->willReturn($om);
+        $element->getRepository()->willReturn($repository);
 
-        $this->beConstructedWith($router, $em);
+        $this->beConstructedWith($router);
     }
 
     function it_is_initializable()
@@ -39,19 +42,17 @@ class ReorderControllerSpec extends ObjectBehavior
         NestedTreeRepository $repository,
         \StdClass $category,
         Request $request,
-        EntityManager $em,
+        ObjectManager $om,
         Router $router,
         DoctrineDataIndexer $indexer
     ) {
         $request->get('id')->willReturn(1);
         $indexer->getData(1)->willReturn($category);
 
-        $element->getRepository()->willReturn($repository);
-
         $repository->moveUp($category)->shouldBeCalled();
 
-        $em->persist($category)->shouldBeCalled();
-        $em->flush()->shouldBeCalled();
+        $om->persist($category)->shouldBeCalled();
+        $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', Argument::withEntry('element', 'category'))
             ->willReturn('sample-path');
@@ -67,19 +68,17 @@ class ReorderControllerSpec extends ObjectBehavior
         NestedTreeRepository $repository,
         \StdClass $category,
         Request $request,
-        EntityManager $em,
+        ObjectManager $om,
         Router $router,
         DoctrineDataIndexer $indexer
     ) {
         $request->get('id')->willReturn(1);
         $indexer->getData(1)->willReturn($category);
 
-        $element->getRepository()->willReturn($repository);
-
         $repository->moveDown($category)->shouldBeCalled();
 
-        $em->persist($category)->shouldBeCalled();
-        $em->flush()->shouldBeCalled();
+        $om->persist($category)->shouldBeCalled();
+        $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', Argument::withEntry('element', 'category'))
             ->willReturn('sample-path');

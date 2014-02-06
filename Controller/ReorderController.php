@@ -12,17 +12,12 @@ use Symfony\Component\Routing\Router;
 class ReorderController
 {
     /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $em;
-    /**
      * @var \Symfony\Component\Routing\Router
      */
     private $router;
 
-    public function __construct(Router $router, EntityManager $em)
+    public function __construct(Router $router)
     {
-        $this->em = $em;
         $this->router = $router;
     }
 
@@ -34,8 +29,9 @@ class ReorderController
         $repository = $element->getRepository();
         $repository->moveUp($entity);
 
-        $this->em->persist($entity);
-        $this->em->flush();
+        $om = $element->getObjectManager();
+        $om->persist($entity);
+        $om->flush();
 
         return new RedirectResponse(
             $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId()))
@@ -50,8 +46,9 @@ class ReorderController
         $repository = $element->getRepository();
         $repository->moveDown($entity);
 
-        $this->em->persist($entity);
-        $this->em->flush();
+        $om = $element->getObjectManager();
+        $om->persist($entity);
+        $om->flush();
 
         return new RedirectResponse(
             $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId()))
