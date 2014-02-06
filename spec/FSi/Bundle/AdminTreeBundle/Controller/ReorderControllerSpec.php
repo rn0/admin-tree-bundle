@@ -10,6 +10,7 @@
 namespace spec\FSi\Bundle\AdminTreeBundle\Controller;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityRepository;
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
 use FSi\Component\DataIndexer\DoctrineDataIndexer;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
@@ -17,9 +18,6 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Routing\Router;
 
-/**
- * @mixin \FSi\Bundle\AdminTreeBundle\Controller\ReorderController
- */
 class ReorderControllerSpec extends ObjectBehavior
 {
     function let(
@@ -98,6 +96,22 @@ class ReorderControllerSpec extends ObjectBehavior
             ->duringMoveUpAction($element, 666);
 
         $this->shouldThrow('FSi\Component\DataIndexer\Exception\RuntimeException')
+            ->duringMoveDownAction($element, 666);
+    }
+
+    function it_throws_exception_when_entity_doesnt_have_correct_repository(
+        CRUDElement $element,
+        EntityRepository $repository,
+        DoctrineDataIndexer $indexer,
+        \StdClass $category
+    ) {
+        $indexer->getData(666)->willReturn($category);
+        $element->getRepository()->willReturn($repository);
+
+        $this->shouldThrow('\InvalidArgumentException')
+            ->duringMoveUpAction($element, 666);
+
+        $this->shouldThrow('\InvalidArgumentException')
             ->duringMoveDownAction($element, 666);
     }
 }

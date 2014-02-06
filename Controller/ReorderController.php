@@ -10,6 +10,7 @@
 namespace FSi\Bundle\AdminTreeBundle\Controller;
 
 use FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Router;
@@ -40,6 +41,7 @@ class ReorderController
 
         /** @var $repository \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
         $repository = $element->getRepository();
+        $this->assertCorrectRepositoryType($repository);
         $repository->moveUp($entity);
 
         $om = $element->getObjectManager();
@@ -62,6 +64,7 @@ class ReorderController
 
         /** @var $repository \Gedmo\Tree\Entity\Repository\NestedTreeRepository */
         $repository = $element->getRepository();
+        $this->assertCorrectRepositoryType($repository);
         $repository->moveDown($entity);
 
         $om = $element->getObjectManager();
@@ -88,5 +91,19 @@ class ReorderController
         }
 
         return $entity;
+    }
+
+    /**
+     * @param $repository
+     * @throws \InvalidArgumentException
+     * @internal param \FSi\Bundle\AdminBundle\Admin\Doctrine\CRUDElement $element
+     */
+    private function assertCorrectRepositoryType($repository)
+    {
+        if (!$repository instanceof NestedTreeRepository) {
+            throw new \InvalidArgumentException(
+                sprintf("Entity must have repository class 'NestedTreeRepository'")
+            );
+        }
     }
 }
