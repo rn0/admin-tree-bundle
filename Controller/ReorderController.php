@@ -44,9 +44,7 @@ class ReorderController
         $this->assertCorrectRepositoryType($repository);
         $repository->moveUp($entity);
 
-        $om = $element->getObjectManager();
-        $om->persist($entity);
-        $om->flush();
+        $element->getObjectManager()->flush();
 
         return new RedirectResponse(
             $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId()))
@@ -67,9 +65,7 @@ class ReorderController
         $this->assertCorrectRepositoryType($repository);
         $repository->moveDown($entity);
 
-        $om = $element->getObjectManager();
-        $om->persist($entity);
-        $om->flush();
+        $element->getObjectManager()->flush();
 
         return new RedirectResponse(
             $this->router->generate('fsi_admin_crud_list', array('element' => $element->getId()))

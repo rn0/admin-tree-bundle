@@ -52,7 +52,6 @@ class ReorderControllerSpec extends ObjectBehavior
 
         $repository->moveUp($category)->shouldBeCalled();
 
-        $om->persist($category)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', Argument::withEntry('element', 'category'))
@@ -75,7 +74,6 @@ class ReorderControllerSpec extends ObjectBehavior
 
         $repository->moveDown($category)->shouldBeCalled();
 
-        $om->persist($category)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
         $router->generate('fsi_admin_crud_list', Argument::withEntry('element', 'category'))
