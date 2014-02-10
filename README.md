@@ -1,24 +1,55 @@
 # FSiAdminTreeBundle
 
-This bundle provides way to move up and down node in tree.
+This bundle provides way to move up and down node in **NestedSet Tree**.
 
 `FSiAdminTreeBundle` works with conjunction with [Tree - Nestedset behavior extension for Doctrine 2](https://github.com/l3pp4rd/DoctrineExtensions/blob/master/doc/tree.md).
+The best method to use `DoctrineExtensions - Tree` in Symfony2 application is [StofDoctrineExtensionsBundle](https://github.com/stof/StofDoctrineExtensionsBundle)
 
-## Usage
+## Installation
 
-Add to `AppKernel.php`:
+Add to `composer.json`:
 
-```php
-new FSi\Bundle\AdminTreeBundle\FSiAdminTreeBundle(),
+```yaml
+"require": {
+    "stof/doctrine-extensions-bundle": "~1.1@dev",
+}
 ```
 
-Add routes to /app/config/routing.yml:
+and run `composer update`.
+
+Add to `app/AppKernel.php`:
+
+```php
+public function registerBundles()
+{
+    return array(
+        // ...
+        new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+        new FSi\Bundle\AdminTreeBundle\FSiAdminTreeBundle(),
+        // ...
+    );
+}
+
+```
+Add to `app/config/config.yml`
+
+```yml
+stof_doctrine_extensions:
+    default_locale: pl_PL
+    orm:
+        default:
+            tree: true
+```
+
+Add routes to `app/config/routing.yml`:
 
 ```yaml
 _fsi_tree_bundle:
     resource: "@FSiAdminTreeBundle/Resources/config/routing.xml"
     prefix: /
 ```
+
+## Usage
 
 Sample datagrid definition:
 
